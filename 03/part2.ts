@@ -35,12 +35,26 @@ const isPartNumber = (
     const startIndex = Math.max(0, numberStart - 1);
     const endIndex = Math.min(line.length, numberEnd + 1);
 
+    console.log(
+        number,
+        "INDEX",
+        startIndex,
+        endIndex,
+        parsedIndex,
+        "CONTENT",
+        content[startLine].slice(startIndex, endIndex),
+        content[index].slice(startIndex, endIndex),
+        content[endLine].slice(startIndex, endIndex)
+    );
+
     if (
         content[startLine].slice(startIndex, endIndex).match(/[^.\d]/) ||
         content[index].slice(startIndex, endIndex).match(/[^.\d]/) ||
         content[endLine].slice(startIndex, endIndex).match(/[^.\d]/)
-    )
+    ) {
         return true;
+    }
+
     return false;
 };
 
@@ -66,6 +80,18 @@ const lines = content.forEach((line, index) => {
                                 line.indexOf(gear)
                             );
 
+                            console.log("PRE PARSED");
+                            const nStart =
+                                line
+                                    .slice(parsedIndex, line.length)
+                                    .indexOf(number) + parsedIndex;
+                            const nEnd = nStart + number.length;
+                            parsedIndex = nEnd;
+
+                            console.log(number, line, i, parsedIndex);
+
+                            console.log("PARSED");
+
                             const numberStart =
                                 content[i]
                                     .slice(parIndex, content[i].length)
@@ -84,7 +110,6 @@ const lines = content.forEach((line, index) => {
                                     )
                                 ) {
                                     if (power === 0) power++;
-                                    console.log(number);
                                     power *= parseInt(number);
                                     partialNumbers++;
                                     break;
