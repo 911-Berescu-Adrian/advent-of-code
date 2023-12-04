@@ -12,9 +12,9 @@ content.forEach((line, index) => {
     const [_, numbers] = line.split(":");
     var [winningNumbersStr, elfNumbersStr] = numbers.split(" | ");
     const winningNumbers = winningNumbersStr.split(" ");
-    const elfNumber = elfNumbersStr.split(" ");
+    const elfNumbers = elfNumbersStr.split(" ");
     matches = winningNumbers.filter(
-        (number) => number !== "" && elfNumber.includes(number)
+        (number) => number !== "" && elfNumbers.includes(number)
     ).length;
 
     console.log(instances[index]);
