@@ -61,7 +61,7 @@ content.forEach((line, index) => {
         );
 
         neighbours.forEach(([x, y]) => {
-            if (content[x][y] >= "0" && content[x][y] <= "9") {
+            if (isNumber(x, y)) {
                 numberSet.add(getNumber(x, y, line.length));
             }
         });
