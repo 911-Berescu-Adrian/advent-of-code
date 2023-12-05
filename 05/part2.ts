@@ -3,8 +3,9 @@ import * as fs from "fs";
 const filepath: string = "./05/input.txt";
 const content = fs.readFileSync(filepath, "utf-8").split("\r\n\r\n");
 
+var startTime = Date.now();
+
 var hashmap: { [key: number]: SeedMap[] } = {};
-var locations: number[] = [];
 
 type SeedMap = {
     DestinationStart: number;
@@ -44,29 +45,40 @@ for (var i = 1; i < content.length; ++i) {
     hashmap[i] = seedMaps;
 }
 
-seedArray.forEach((seedEntry) => {
-    for (var i = 0; i < seedEntry.Range; ++i) {
-        var seed = seedEntry.SeedStart + i;
-        var mappedValue = seed;
-        for (const key in hashmap) {
-            var isMapped = false;
-            if (hashmap.hasOwnProperty(key)) {
-                const seedMaps = hashmap[key];
+var minLocation: number = 0;
+var isSearching = true;
+const reversedKeys = Object.keys(hashmap).map(Number).reverse();
 
-                for (const seedMap of seedMaps)
-                    if (seedMap.SourceStart <= mappedValue && seedMap.SourceStart + seedMap.Range >= mappedValue) {
-                        mappedValue = seedMap.DestinationStart + (mappedValue - seedMap.SourceStart);
-                        isMapped = true;
-                        break;
+for (var i = 0; i < Number.MAX_VALUE && isSearching; ++i) {
+    minLocation = i;
+    for (const key of reversedKeys) {
+        if (hashmap.hasOwnProperty(key)) {
+            const seedMaps = hashmap[key];
+            for (const seedMap of seedMaps) {
+                if (minLocation >= seedMap.DestinationStart && minLocation < seedMap.DestinationStart + seedMap.Range) {
+                    // if (i === 0) console.log("BEFORE", minLocation);
+                    minLocation = seedMap.SourceStart + (minLocation - seedMap.DestinationStart);
+                    // if (i === 0) {
+                    // console.log(minLocation, key, seedMap);
+                    // }
+                    if (key === 1) {
+                        // console.log(key, i, minLocation);
+                        seedArray.forEach((seed) => {
+                            if (seed.SeedStart <= minLocation && minLocation < seed.SeedStart + seed.Range) {
+                                // console.log(seed, i);
+                                isSearching = false;
+                                console.log("LOWEST", i);
+                            }
+                        });
+                        if (!isSearching) break;
                     }
-            }
-
-            if (!isMapped) {
-                mappedValue = mappedValue;
+                    break;
+                }
             }
         }
-        locations.push(mappedValue);
     }
-});
+}
 
-console.log(Math.min(...locations));
+var endTime = Date.now();
+
+console.log(endTime - startTime, "ms");

@@ -4,7 +4,7 @@ const filepath: string = "./05/input.txt";
 const content = fs.readFileSync(filepath, "utf-8").split("\r\n\r\n");
 
 var hashmap: { [key: number]: SeedMap[] } = {};
-var locations: number[] = [];
+var minLocation: number = Number.MAX_VALUE;
 
 type SeedMap = {
     DestinationStart: number;
@@ -35,23 +35,18 @@ seeds.forEach((seed) => {
     var mappedValue = seed;
 
     for (const key in hashmap) {
-        var isMapped = false;
         if (hashmap.hasOwnProperty(key)) {
             const seedMaps = hashmap[key];
 
             for (const seedMap of seedMaps)
-                if (seedMap.SourceStart <= mappedValue && seedMap.SourceStart + seedMap.Range >= mappedValue) {
+                if (seedMap.SourceStart <= mappedValue && seedMap.SourceStart + seedMap.Range > mappedValue) {
+                    console.log(seedMap, mappedValue);
                     mappedValue = seedMap.DestinationStart + (mappedValue - seedMap.SourceStart);
-                    isMapped = true;
                     break;
                 }
         }
-
-        if (!isMapped) {
-            mappedValue = mappedValue;
-        }
     }
-    locations.push(mappedValue);
+    if (minLocation > mappedValue) minLocation = mappedValue;
 });
 
-console.log(Math.min(...locations));
+console.log(minLocation);
