@@ -20,11 +20,20 @@ var solutions = 0;
 // }
 
 // O(n/2) - 53ms
+// for (var i = 1; i <= time / 2; ++i) {
+//     let dist = (time - i) * i;
+//     if (dist > distance) solutions += 2;
+// }
+// if (time % 2 === 0) solutions--;
+
+// O(logn??) - 21ms
 for (var i = 1; i <= time / 2; ++i) {
     let dist = (time - i) * i;
-    if (dist > distance) solutions += 2;
+    if (dist > distance) {
+        solutions = time - i - i + 1;
+        break;
+    }
 }
-if (time % 2 === 0) solutions--;
 
 console.log(solutions);
 
