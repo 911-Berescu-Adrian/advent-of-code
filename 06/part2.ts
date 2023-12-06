@@ -27,13 +27,25 @@ var solutions = 0;
 // if (time % 2 === 0) solutions--;
 
 // O(logn??) - 21ms
-for (var i = 1; i <= time / 2; ++i) {
-    let dist = (time - i) * i;
-    if (dist > distance) {
-        solutions = time - i - i + 1;
-        break;
-    }
-}
+// for (var i = 1; i <= time / 2; ++i) {
+//     let dist = (time - i) * i;
+//     if (dist > distance) {
+//         solutions = time - i - i + 1;
+//         break;
+//     }
+// }
+
+//O(1) 🤓 akshually - 1.6ms
+
+// a = -1
+// b = time
+// c = -distance
+
+// b^2-4ac = time^2 - 4*record
+// (-b +- sqrt(delta)) /2
+
+var delta = time * time - 4 * distance;
+solutions = Math.floor((-time - Math.sqrt(delta)) / -2) - Math.ceil((-time + Math.sqrt(delta)) / -2) + 1;
 
 console.log(solutions);
 
