@@ -28,6 +28,7 @@ const getStepsToEnd = (startNode: NodeParsing) => {
         else startNode.Current = nodes[startNode.Current].Right;
         steps++;
     }
+    console.log(startNode);
     return steps;
 };
 
@@ -44,18 +45,11 @@ input.split("\r\n").forEach((node) => {
     if (current[current.length - 1] === "A") startNodes.push({ Start: current, Current: current });
 });
 
-let index = 0;
-let steps = 0;
-let isRunning = true;
-while (isRunning) {
-    isRunning = false;
-    startNodes.forEach((entry, idx) => {
-        if (entry.Current[entry.Current.length - 1] !== "Z") isRunning = true;
-        if (directions[index] === "L") startNodes[idx].Current = nodes[startNodes[idx].Current].Left;
-        else startNodes[idx].Current = nodes[startNodes[idx].Current].Right;
-    });
-    steps++;
-    index = (index + 1) % directions.length;
-}
-steps--;
+let stepsArray: number[] = [];
+
+startNodes.forEach((node) => {
+    stepsArray.push(getStepsToEnd(node));
+});
+
+const steps = stepsArray.reduce((acc, curr) => LCM(acc, curr), 1);
 console.log(steps);
