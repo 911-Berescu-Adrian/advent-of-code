@@ -78,15 +78,23 @@ var directionsY = [0, 1, 0, -1];
 
 var pipes: Map<PipeCoords, number> = new Map();
 
+console.log(neighbours["-"]);
+
+var globalSteps = 0;
+
+const isNeighbour = (current: PipeCoords, next: PipeCoords) => {};
+
 const findLoopMaxDistance = (startingPoint: PipeCoords, previousPoint: PipeCoords, steps: number) => {
     if (startingPoint.Pipe === "S" && steps > 0) return steps;
-
+    globalSteps = steps;
     for (let i = 0; i < directionsX.length; ++i) {
         let x = startingPoint.X + directionsX[i];
         let y = startingPoint.Y + directionsY[i];
         if (x === previousPoint.X && y === previousPoint.Y) continue;
         if (isPipe(content[x][y])) {
+            // check if is neighbour
             let nextPoint: PipeCoords = { Pipe: toPipe(content[x][y]), X: x, Y: y };
+            console.log(nextPoint, startingPoint);
             if (pipes.has(startingPoint)) {
                 let val = Math.min(pipes.get(startingPoint) || 0, steps);
                 pipes.set(startingPoint, val);
@@ -94,7 +102,8 @@ const findLoopMaxDistance = (startingPoint: PipeCoords, previousPoint: PipeCoord
                 pipes.set(startingPoint, steps);
             }
             findLoopMaxDistance(nextPoint, startingPoint, steps + 1);
-            // break; // maybe shouldnt break to check all neighbours in case of dead ends
+
+            break; // maybe shouldnt break to check all neighbours in case of dead ends
         }
     }
 };
@@ -105,7 +114,6 @@ content.forEach((line, index) => {
     }
 });
 
-console.log();
 // pipes.clear();
 let test: PipeCoords = { Pipe: "|", X: 2, Y: 1 };
 // pipes.set(test, 4);
@@ -119,8 +127,10 @@ type Coords = {
 
 var coords: Map<Coords, number> = new Map();
 
-pipes.forEach((value, key) => {
-    console.log("(", key.X, key.Y, ")", value);
-});
+// pipes.forEach((value, key) => {
+//     console.log("(", key.X, key.Y, ")", value);
+// });
 
-console.log(coords);
+// console.log(coords);
+//console.log(pipes);
+console.log((globalSteps + 1) / 2);

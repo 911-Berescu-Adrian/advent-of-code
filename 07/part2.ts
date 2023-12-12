@@ -32,20 +32,20 @@ handsArray.forEach((hand, index) => {
 
     const filteredEntries = Array.from(charHashSet.entries()).filter(([key]) => key !== "J");
     const valuesArray = Array.from(charHashSet.values());
-    // console.log(filteredEntries, valuesArray);
     let maxValue = 0;
     var Jcount: number = 0;
     if (filteredEntries.length !== 0) {
         maxValue = Math.max(...filteredEntries.map(([_, value]) => value));
         Jcount = charHashSet.get("J") || 0;
     } else {
-        console.log("hey", hand.Cards);
-        maxValue = Math.max(...valuesArray);
-        console.log(maxValue);
+        Jcount = Math.max(...valuesArray);
     }
 
     handsArray[index].HighestMatching = maxValue + Jcount;
+    console.log(hand);
     let count = 0;
+
+    //  get number of matchings
 
     if (filteredEntries.length !== 0) {
         filteredEntries.forEach(([_, value]) => {
@@ -65,6 +65,9 @@ handsArray.forEach((hand, index) => {
         handsArray[index].isFullHouse = 1;
     }
 });
+
+// IS THIS CORRECT ORDER? CHECK IF MATCHINGS SHOULD BE BELOW CARDS
+// 2345J VS 23456
 
 handsArray.sort((a, b) => {
     if (a.HighestMatching !== b.HighestMatching) return a.HighestMatching - b.HighestMatching;
