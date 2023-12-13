@@ -81,6 +81,8 @@ handsArray.sort((a, b) => {
     return 0;
 });
 
+console.log(handsArray);
+
 var sum = 0;
 
 handsArray.forEach((hand, index) => {
