@@ -62,5 +62,5 @@ handsArray.forEach((hand, index) => {
     sum += hand.Bid * (index + 1);
 });
 
-// console.log(handsArray);
+console.log(handsArray);
 console.log(sum);
